@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "ES6",                          // Version JavaScript cible
+    "lib": ["DOM", "DOM.Iterable", "ESNext"], // Bibliothèques nécessaires pour React et JS moderne
+    "allowJs": true,                          // Permet d'utiliser des fichiers .js avec TS
+    "skipLibCheck": true,                     // Ignore la vérification des types des fichiers dans node_modules
+    "strict": true,                           // Active le mode strict pour TypeScript
+    "forceConsistentCasingInFileNames": true, // Force la cohérence de la casse dans les imports
+    "allowSyntheticDefaultImports": true,
+    "module": "ESNext",                       // Utilise le module ESNext pour les imports/exports
+    "moduleResolution": "Node",              // Utilise Node.js pour résoudre les modules
+    "resolveJsonModule": true,                // Permet d'importer des fichiers JSON
+    "isolatedModules": true,                  // Nécessaire pour les projets React (CRA)
+    "noEmit": true,                           // Empêche la génération de fichiers .js
+    "jsx": "react-jsx",                       // Configuration pour JSX avec React 17+
+    "baseUrl": "./",                          // Racine pour les chemins relatifs
+    "paths": {
+      "*": ["src/*"]                          // Permet d'utiliser des imports absolus à partir de `src`
+    }
+  },
+  "include": ["src"],                         // Inclut uniquement les fichiers dans `src`
+  "exclude": ["node_modules", "build"]        // Exclut les dépendances et le dossier de build
+}

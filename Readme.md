@@ -1,5 +1,9 @@
 
-Ceci est le README.test
+Ceci est le README.
 
-Ceci est le README.testmain
 
+Pour lancer le projet :
+-
+-
+Pour Installer les depandances : 
+-
