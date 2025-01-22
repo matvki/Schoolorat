@@ -5,19 +5,24 @@ import { useAuth } from '../Context/authContext';
 const LoginForm: React.FC = () => {
   const { login } = useAuth();
   const [username, setUsername] = useState('');
+  const [error, setError] = useState('');
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    // Simuler une connexion avec un nom d'utilisateur
-    if (username) {
-      login();
+    if (!username) {
+      setError('Veuillez entrer un nom d\'utilisateur');
+      return;
     }
+    // Simuler une connexion avec un nom d'utilisateur
+    login();
   };
 
   return (
     <form onSubmit={handleSubmit}>
+      <h2>Connexion</h2>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
       <label>
-        Username:
+        Nom d'utilisateur:
         <input
           type="text"
           value={username}
@@ -25,7 +30,8 @@ const LoginForm: React.FC = () => {
           required
         />
       </label>
-      <button type="submit">Login</button>
+      <button type="submit">Se connecter</button>
+      <p>Pas de compte ? <a href="/signup">Inscrivez-vous ici</a></p>
     </form>
   );
 };
