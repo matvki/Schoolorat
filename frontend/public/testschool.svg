@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 300" width="500" height="300">
+  <!-- Design moderne et minimaliste pour une enseigne d'entreprise -->
+  <!-- Forme principale : Cercle central divisé symbolisant équilibre et collaboration -->
+  <circle cx="200" cy="150" r="80" fill="#45B8D6" />
+  <path d="M200 70 A80 80 0 1 1 199.9 70" fill="#D68A45" />
+
+  <!-- Élément de connexion : Ligne fluide horizontale au centre -->
+  <rect x="120" y="145" width="160" height="10" fill="#FFFFFF" rx="5" />
+
+  <!-- Texte moderne et élégant -->
+  <text x="250" y="270" font-family="Poppins, sans-serif" font-size="36" font-weight="bold" text-anchor="middle">
+    <tspan fill="#45B8D6">School</tspan><tspan fill="#D68A45">orat</tspan>
+  </text>
+</svg>

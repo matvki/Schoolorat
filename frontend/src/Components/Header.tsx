@@ -33,7 +33,7 @@ const Header: React.FC = () => {
           )}
 
           {/* Ne pas afficher "Mon compte" si on est sur la vitrine, login ou signup */}
-          {isAuthenticated && location.pathname !== '/' && location.pathname !== '/login' && location.pathname !== '/signup' && (
+          {isAuthenticated && location.pathname !== '/' && location.pathname !== '/login' && location.pathname !== '/signup' && location.pathname !== '/account' && (
             <li><Link to="/account">Mon compte</Link></li>
           )}
 
