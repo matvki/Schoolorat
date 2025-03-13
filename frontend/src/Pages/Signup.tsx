@@ -1,109 +1,139 @@
-// src/pages/SignupPage.tsx
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import {
+  Box,
+  Button,
+  Field,
+  Fieldset,
+  Input,
+  NativeSelect,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 
 const SignupPage: React.FC = () => {
-  const [role, setRole] = useState<'etudiant' | 'etablissement'>('etudiant');
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [school, setSchool] = useState('');
-  const [error, setError] = useState('');
+  const [role, setRole] = useState<"etudiant" | "etablissement">("etudiant");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [school, setSchool] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     // Validation basique
     if (!username || !email || !password) {
-      setError('Tous les champs sont obligatoires.');
+      setError("Tous les champs sont obligatoires.");
       return;
     }
 
-    // Si l'utilisateur est un établissement, le champ établissement devient obligatoire
-    if (role === 'etablissement' && !school) {
-      setError('Veuillez renseigner le nom de l\'établissement.');
+    if (role === "etablissement" && !school) {
+      setError("Veuillez renseigner le nom de l'établissement.");
       return;
     }
 
-    // Si l'utilisateur est un étudiant, vérifier si l'établissement a été renseigné (facultatif)
-    if (role === 'etudiant' && !school) {
-      setError('');
-    }
-
-    // Logique d'inscription (à adapter à ton backend)
-    console.log('Inscription réussie !');
-    setError('');
-    // Effectuer l'inscription avec les données du formulaire
+    setError(""); // Reset errors
+    console.log("Inscription réussie !");
   };
 
   return (
-    <div>
-      <h2>Inscription</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Nom d'utilisateur:</label>
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Mot de passe:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      height="100vh"
+      width="100vw"
+      bg="gray.100"
+      p={4}
+    >
+      <Box
+        bg="white"
+        p={6}
+        borderRadius="lg"
+        boxShadow="lg"
+        maxW="400px"
+        width="100%"
+      >
+        <Fieldset.Root size="lg">
+          <Stack >
+            <Fieldset.Legend>Inscription</Fieldset.Legend>
 
-        <div>
-          <label>Vous êtes:</label>
-          <select value={role} onChange={(e) => setRole(e.target.value as 'etudiant' | 'etablissement')}>
-            <option value="etudiant">Étudiant</option>
-            <option value="etablissement">Établissement</option>
-          </select>
-        </div>
+            {error && <Text color="red.500">{error}</Text>}
 
-        {/* Afficher le champ établissement seulement si le rôle est "établissement" */}
-        {role === 'etablissement' && (
-          <div>
-            <label>Nom de l'établissement:</label>
-            <input
-              type="text"
-              value={school}
-              onChange={(e) => setSchool(e.target.value)}
-              required
-            />
-          </div>
-        )}
+            <Field.Root>
+              <Field.Label>Nom d'utilisateur</Field.Label>
+              <Input
+                placeholder="Votre nom"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </Field.Root>
 
-        {/* Afficher le champ établissement seulement si le rôle est "étudiant" */}
-        {role === 'etudiant' && (
-          <div>
-            <label>Nom de l'établissement (facultatif):</label>
-            <input
-              type="text"
-              value={school}
-              onChange={(e) => setSchool(e.target.value)}
-            />
-          </div>
-        )}
+            <Field.Root>
+              <Field.Label>Email</Field.Label>
+              <Input
+                placeholder="me@example.com"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </Field.Root>
 
-        <button type="submit">S'inscrire</button>
-      </form>
-    </div>
+            <Field.Root>
+              <Field.Label>Mot de passe</Field.Label>
+              <Input
+                placeholder="••••••••"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </Field.Root>
+
+            <Field.Root>
+              <Field.Label>Vous êtes</Field.Label>
+              <NativeSelect.Root>
+                <NativeSelect.Field
+                  value={role}
+                  onChange={(e) =>
+                    setRole(e.target.value as "etudiant" | "etablissement")
+                  }
+                >
+                  <option value="etudiant">Étudiant</option>
+                  <option value="etablissement">Établissement</option>
+                </NativeSelect.Field>
+                <NativeSelect.Indicator />
+              </NativeSelect.Root>
+            </Field.Root>
+
+            {role === "etablissement" && (
+              <Field.Root>
+                <Field.Label>Nom de l'établissement</Field.Label>
+                <Input
+                  placeholder="Nom de l'établissement"
+                  value={school}
+                  onChange={(e) => setSchool(e.target.value)}
+                />
+              </Field.Root>
+            )}
+
+            {role === "etudiant" && (
+              <Field.Root>
+                <Field.Label>Nom de l'établissement (facultatif)</Field.Label>
+                <Input
+                  placeholder="Facultatif"
+                  value={school}
+                  onChange={(e) => setSchool(e.target.value)}
+                />
+              </Field.Root>
+            )}
+
+            <Button colorScheme="blue" onClick={handleSubmit} width="100%">
+              S'inscrire
+            </Button>
+          </Stack>
+        </Fieldset.Root>
+      </Box>
+    </Box>
   );
 };
 

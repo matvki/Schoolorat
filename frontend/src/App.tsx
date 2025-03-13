@@ -9,6 +9,8 @@ import { AuthProvider } from './Context/authContext';
 import Login from './Pages/Login';
 import Signup from './Pages/Signup';
 import AccountManagement from './Pages/AccountManagement';
+import AnnouncementManagement from './Pages/AnnouncementManagement';
+import SchoolManagement from './Pages/SchoolManagement';
 
 const App: React.FC = () => {
   return (
@@ -20,7 +22,9 @@ const App: React.FC = () => {
           <Route path="/home" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/account" element={<AccountManagement />} /> {/* Route ajoutée */}
+          <Route path="/account" element={<AccountManagement />} />
+          <Route path="/annonce" element={<AnnouncementManagement />} />
+          <Route path="/school" element={<SchoolManagement />} />
        
         </Routes>
       </Router>
