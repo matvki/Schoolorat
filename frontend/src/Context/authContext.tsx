@@ -1,31 +1,47 @@
-// src/authContext.tsx
-import React, { createContext, useState, useContext, ReactNode } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 
-interface AuthContextType {
-  isAuthenticated: boolean;
-  login: () => void;
-  logout: () => void;
-}
+// Créer un contexte pour l'authentification
+const AuthContext = createContext(null);
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+// Fonction pour récupérer l'utilisateur depuis le localStorage
+const getUserFromLocalStorage = () => {
+  const user = localStorage.getItem('currentUser');
+  return user ? JSON.parse(user) : null;
+};
 
-export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(true);
+// Fournisseur du contexte d'authentification
+export const AuthProvider = ({ children }) => {
+  const [currentUser, setCurrentUser] = useState(getUserFromLocalStorage());
+  const [loading, setLoading] = useState(true);
 
-  const login = () => setIsAuthenticated(true);
-  const logout = () => setIsAuthenticated(false);
+  useEffect(() => {
+    setLoading(false);
+  }, []);
+
+  const login = (user) => {
+    localStorage.setItem('currentUser', JSON.stringify(user));
+    setCurrentUser(user);
+  };
+
+  const logout = () => {
+    localStorage.removeItem('currentUser');
+    setCurrentUser(null);
+  };
+
+  const checkRole = (role) => {
+    return currentUser?.roles?.includes(role);
+  };
+
+  const getUserId = () => {
+    return currentUser?.id;
+  };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ currentUser, login, logout, checkRole, getUserId, loading }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-export const useAuth = (): AuthContextType => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-};
+// Hook personnalisé pour accéder au contexte
+export const useAuth = () => React.useContext(AuthContext);

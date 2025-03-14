@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../Context/authContext';
+import { useAuth } from '../Context/authContext'; // Importation du contexte d'authentification
 import {
   Box,
   Button,
-  Field,
   Input,
   Stack,
   Heading,
@@ -19,16 +18,41 @@ const Login: React.FC = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    // Vérification des champs de connexion
     if (!email || !password) {
       setError('Veuillez remplir tous les champs');
       return;
     }
 
-    login();
-    navigate('/home');
+    try {
+      // Appel à ton API pour authentifier l'utilisateur et récupérer ses données
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!response.ok) {
+        setError('Email ou mot de passe incorrect');
+        return;
+      }
+
+      // Si la connexion est réussie, récupérer l'utilisateur depuis la réponse de l'API
+      const userData = await response.json();
+      
+      // Enregistrement de l'utilisateur dans le contexte et localStorage
+      login(userData);
+
+      // Redirection vers la page d'accueil
+      navigate('/home');
+    } catch (err) {
+      setError('Une erreur est survenue lors de la connexion');
+    }
   };
 
   return (
@@ -55,30 +79,21 @@ const Login: React.FC = () => {
 
         <form onSubmit={handleLogin}>
           <Stack >
-            <Field.Root invalid={!!error}>
-              <Field.Label>Email</Field.Label>
-              <Input
-                type="email"
-                placeholder="me@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-              {error && <Field.ErrorText>Veuillez entrer un email valide</Field.ErrorText>}
-            </Field.Root>
-
-            <Field.Root invalid={!!error}>
-              <Field.Label>Mot de passe</Field.Label>
-              <Input
-                type="password"
-                placeholder="********"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-              {error && <Field.ErrorText>Le mot de passe est requis</Field.ErrorText>}
-            </Field.Root>
-
+            <Input
+              type="email"
+              placeholder="me@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <Input
+              type="password"
+              placeholder="********"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            {error && <Text color="red.500" textAlign="center">{error}</Text>}
             <Button type="submit" colorScheme="teal" width="full">
               Se connecter
             </Button>
